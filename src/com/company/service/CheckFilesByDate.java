@@ -1,7 +1,6 @@
-package com.company.util;
+package com.company.service;
 
 import com.company.model.ConnectionToServer;
-import com.company.service.CreateFolderAndFile;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import java.util.Scanner;
 
 public class CheckFilesByDate {
 
-    public static void deleteOldInfo() throws IOException {
-        long threeDays = 1000*60*60*24*3;
+    public static ArrayList<ConnectionToServer> deleteOldInfo(int days) throws IOException {
+        long threeDays = 1000*60*60*24*days;
         ArrayList<ConnectionToServer> arrayList = new ArrayList<>();
         Date time = new Date();
         Scanner scanner = new Scanner(CreateFolderAndFile.createAndUseFile());
@@ -28,9 +27,10 @@ public class CheckFilesByDate {
             try {
                 writer.write(arrayList.get(i) + "\n");
             }catch (IOException a){
-                System.out.println("запись не прошла");
+                System.out.println("record failed");
             }
         }
         writer.close();
+        return arrayList;
     }
 }
