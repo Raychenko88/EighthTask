@@ -3,6 +3,7 @@ package com.company.service;
 
 import com.company.model.ConnectionToServer;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,52 +20,41 @@ public class FIleManagerService {
             filePath.mkdir();                                        // создаем папку (mkdir - true) если папка создана (mkdir - false)
         }
         File file = new File(filePath + File.separator + fileName);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();                                      // создаем папку (mkdir - true) если папка создана (mkdir - false)
-            }
-        }catch (
-                IOException a){
-            System.out.println("Something went wrong");
-        }
     }
 
-    public static ArrayList<ConnectionToServer> writeToFile(String fileName, ConnectionToServer obj) throws IOException {
-        ArrayList<ConnectionToServer> arrayList = new ArrayList<>();
+    public static void writeToFile(String fileName, ConnectionToServer obj, boolean append) throws IOException {
         FileWriter writer = new FileWriter(pathFile + File.separator + fileName, true);
             try {
                 writer.write(obj + "\n");
-                arrayList.add(obj);
+                writer.flush();
             }catch (IOException a){
                 System.out.println("record failed");
             }
         writer.close();
-        return arrayList;
     }
 
-    public static ArrayList<ConnectionToServer> deleteOldInfo(int days, String fileName) throws IOException {
-        File file = new File(pathFile + File.separator + fileName);
-        long allDays = 1000*60*60*24*days;
+    public static  ArrayList<ConnectionToServer> readInfo(String fileName) throws IOException {
+        FileReader reader = new FileReader(pathFile + File.separator + fileName);
         ArrayList<ConnectionToServer> arrayList = new ArrayList<>();
-        Date time = new Date();
-        Scanner scanner = new Scanner(file);
+        Scanner scanner = new Scanner(reader);
         while (scanner.hasNextLine()){
             String string = scanner.nextLine();
             String[] arr = string.split(" ");
-            if (time.getTime() - allDays <= Long.parseLong(arr[0])){
-                ConnectionToServer connectionToServer = new ConnectionToServer(Integer.parseInt(arr[1]), Long.parseLong(arr[0]),arr[2]);
-                arrayList.add(connectionToServer);
-            }
+            ConnectionToServer connectionToServer = new ConnectionToServer(Integer.parseInt(arr[1]), Long.parseLong(arr[0]),arr[2]);
+            arrayList.add(connectionToServer);
         }
-        FileWriter writer = new FileWriter(CreateFolderAndFile.createAndUseFile(), false);
-        for (int i = 0; i < arrayList.size(); i++){
-            try {
-                writer.write(arrayList.get(i) + "\n");
-            }catch (IOException a){
-                System.out.println("record failed");
-            }
-        }
-        writer.close();
+        reader.close();
         return arrayList;
+    }
+
+    public static void deleteOldInfo(long time, String fileName) throws IOException {
+        boolean append = false;
+        ArrayList<ConnectionToServer> arrayList = readInfo(fileName);
+        for (ConnectionToServer connectionToServer : arrayList){
+            if (connectionToServer.getTimestamp() >= time){
+                writeToFile(fileName, connectionToServer, append);
+                append = true;
+            }
+        }
     }
 }

@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 public class ReadFromFile {
 
-    public static  ArrayList<String> readInfo() throws IOException {
-        FileReader reader = new FileReader(CreateFolderAndFile.createAndUseFile());
-        ArrayList<String> arrayList = new ArrayList<>();
-        Scanner scanner = new Scanner(CreateFolderAndFile.createAndUseFile());
-            while (scanner.hasNextLine()){
-                arrayList.add(scanner.nextLine());
-            }
-        reader.close();
-            return arrayList;
-    }
+//    public static  ArrayList<String> readInfo() throws IOException {
+//        FileReader reader = new FileReader(CreateFolderAndFile.createAndUseFile());
+//        ArrayList<String> arrayList = new ArrayList<>();
+//        Scanner scanner = new Scanner(CreateFolderAndFile.createAndUseFile());
+//        while (scanner.hasNextLine()){
+//            arrayList.add(scanner.nextLine());
+//        }
+//        reader.close();
+//        return arrayList;
+//    }
 }
