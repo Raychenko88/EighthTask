@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.model.ConnectionToServer;
 import com.company.util.RandomNumbers;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,8 +15,8 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FIleManagerServiceTest {
-    String pathFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "log";
-    String fileName = "testForTest.txt";
+    private static String pathFile = System.getProperty("user.dir") + System.getProperty("file.separator") + "log";
+    private static String fileName = "testForTest.txt";
     @Test
     void writeToFile() throws IOException {
         FIleManagerService.createFolderAndFile(pathFile,fileName);
@@ -47,6 +48,7 @@ class FIleManagerServiceTest {
     void deleteOldInfo() throws IOException {
         long time = new Date().getTime() - 1000 * 60;
         boolean append = false;
+        FIleManagerService.createFolderAndFile(pathFile,fileName);
         ArrayList<ConnectionToServer> arrayList = FIleManagerService.readInfo(fileName);
         ArrayList<ConnectionToServer> arrayListRemove = new ArrayList<>();
         for (int i = 0; i < arrayList.size(); i++){
@@ -57,8 +59,12 @@ class FIleManagerServiceTest {
             }
         }
         ArrayList<ConnectionToServer> arrayList1 = FIleManagerService.readInfo(fileName);
-        System.out.println(arrayListRemove.toString());
-        System.out.println(arrayList1.toString());
-        assert (arrayListRemove.toString().equals(arrayList1.toString()));
+        assertEquals(arrayListRemove.size(), arrayList1.size());
+    }
+
+    @AfterAll
+    static void deleteFile(){
+        File file = new File(pathFile + File.separator + fileName);
+        file.delete();
     }
 }
