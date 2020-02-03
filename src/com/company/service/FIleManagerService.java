@@ -23,7 +23,7 @@ public class FIleManagerService {
     }
 
     public static void writeToFile(String fileName, ConnectionToServer obj, boolean append) throws IOException {
-        FileWriter writer = new FileWriter(pathFile + File.separator + fileName, true);
+        FileWriter writer = new FileWriter(pathFile + File.separator + fileName, append);
             try {
                 writer.write(obj + "\n");
                 writer.flush();
@@ -50,9 +50,9 @@ public class FIleManagerService {
     public static void deleteOldInfo(long time, String fileName) throws IOException {
         boolean append = false;
         ArrayList<ConnectionToServer> arrayList = readInfo(fileName);
-        for (ConnectionToServer connectionToServer : arrayList){
-            if (connectionToServer.getTimestamp() >= time){
-                writeToFile(fileName, connectionToServer, append);
+        for (int i = 0; i < arrayList.size(); i++){
+            if (arrayList.get(i).getTimestamp() >= time){
+                writeToFile(fileName, arrayList.get(i), append);
                 append = true;
             }
         }

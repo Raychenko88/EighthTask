@@ -26,6 +26,6 @@ public class Main {
             }
             FIleManagerService.writeToFile(fileName, connectionToServer, true);
         }
-        FIleManagerService.deleteOldInfo(new Date().getTime() - 1000 , fileName);
+        FIleManagerService.deleteOldInfo(new Date().getTime() - 1000 * 60 , fileName);
     }
 }
