@@ -49,17 +49,32 @@ class FIleManagerServiceTest {
         long time = new Date().getTime() - 1000 * 60;
         boolean append = false;
         FIleManagerService.createFolderAndFile(pathFile,fileName);
-        ArrayList<ConnectionToServer> arrayList = FIleManagerService.readInfo(fileName);
-        ArrayList<ConnectionToServer> arrayListRemove = new ArrayList<>();
-        for (int i = 0; i < arrayList.size(); i++){
-            if (arrayList.get(i).getTimestamp() >= time){
+        ArrayList<ConnectionToServer> arrayList = new ArrayList<>();
+        for (int i = 0; i < 2; i++){
+            ConnectionToServer connectionToServer = new ConnectionToServer();
+            connectionToServer.setSession(RandomNumbers.getRandom(1000000, 9999999));
+            connectionToServer.setTimestamp(new Date().getTime() - RandomNumbers.getRandom(50000000, 100000000));
+            connectionToServer.setIp(
+                    RandomNumbers.getRandom(1,255) + "." +
+                            RandomNumbers.getRandom(1,255) + "." +
+                            RandomNumbers.getRandom(1,255) + "." +
+                            RandomNumbers.getRandom(1,255)  );
+            if (i == 1){
+                connectionToServer.setTimestamp(new Date().getTime());
+            }
+            arrayList.add(connectionToServer);
+            FIleManagerService.writeToFile(fileName, connectionToServer, true);
+        }
+        if (arrayList.size() == 2){
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i).getTimestamp() >= time) {
                 FIleManagerService.writeToFile(fileName, arrayList.get(i), append);
-                arrayListRemove.add(arrayList.get(i));
                 append = true;
             }
         }
+        }
         ArrayList<ConnectionToServer> arrayList1 = FIleManagerService.readInfo(fileName);
-        assertEquals(arrayListRemove.size(), arrayList1.size());
+        assertEquals(1, arrayList1.size());
     }
 
     @AfterAll
