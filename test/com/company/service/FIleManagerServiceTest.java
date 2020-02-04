@@ -47,7 +47,6 @@ class FIleManagerServiceTest {
     @Test
     void deleteOldInfo() throws IOException {
         long time = new Date().getTime() - 1000 * 60;
-        boolean append = false;
         FIleManagerService.createFolderAndFile(pathFile,fileName);
         ArrayList<ConnectionToServer> arrayList = new ArrayList<>();
         for (int i = 0; i < 2; i++){
@@ -66,20 +65,15 @@ class FIleManagerServiceTest {
             FIleManagerService.writeToFile(fileName, connectionToServer, true);
         }
         if (arrayList.size() == 2){
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).getTimestamp() >= time) {
-                FIleManagerService.writeToFile(fileName, arrayList.get(i), append);
-                append = true;
-            }
-        }
+            FIleManagerService.deleteOldInfo(time,fileName);
         }
         ArrayList<ConnectionToServer> arrayList1 = FIleManagerService.readInfo(fileName);
         assertEquals(1, arrayList1.size());
     }
 
-    @AfterAll
-    static void deleteFile(){
-        File file = new File(pathFile + File.separator + fileName);
-        file.delete();
-    }
+//    @AfterAll
+//    static void deleteFile(){
+//        File file = new File(pathFile + File.separator + fileName);
+//        file.delete();
+//    }
 }
