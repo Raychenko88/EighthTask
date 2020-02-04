@@ -71,9 +71,9 @@ class FIleManagerServiceTest {
         assertEquals(1, arrayList1.size());
     }
 
-//    @AfterAll
-//    static void deleteFile(){
-//        File file = new File(pathFile + File.separator + fileName);
-//        file.delete();
-//    }
+    @AfterAll
+    static void deleteFile(){
+        File file = new File(pathFile + File.separator + fileName);
+        file.delete();
+    }
 }
