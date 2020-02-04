@@ -1,5 +1,7 @@
 package com.company.model;
 
+import com.company.service.FIleManagerService;
+
 public class ConnectionToServer {
 
     private int session;
@@ -14,6 +16,7 @@ public class ConnectionToServer {
         this.timestamp = timestamp;
         this.ip = ip;
     }
+
 
     @Override
     public String toString() {

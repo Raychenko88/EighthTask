@@ -7,11 +7,23 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
-public class FIleManagerService {
+public class FIleManagerService extends Thread {
     static String pathFile;
+    static String fileName;
+    static ConnectionToServer obj;
+    static boolean append;
+
+    public FIleManagerService(String fileName, ConnectionToServer obj, boolean append){
+        FIleManagerService.fileName = fileName;
+        FIleManagerService.obj = obj;
+        FIleManagerService.append = append;
+    }
+
+    public void run(){
+        writeToFile(fileName,obj,append);
+    }
 
     public static void createFolderAndFile(String path,String fileName) {
         pathFile = path;
@@ -22,15 +34,15 @@ public class FIleManagerService {
         File file = new File(filePath + File.separator + fileName);
     }
 
-    public static void writeToFile(String fileName, ConnectionToServer obj, boolean append) throws IOException {
+    public static void writeToFile(String fileName, ConnectionToServer obj, boolean append)  {
+        try {
         FileWriter writer = new FileWriter(pathFile + File.separator + fileName, append);
-            try {
                 writer.write(obj + "\n");
                 writer.flush();
+                 writer.close();
             }catch (IOException a){
                 System.out.println("record failed");
             }
-        writer.close();
     }
 
     public static  ArrayList<ConnectionToServer> readInfo(String fileName) throws IOException {
