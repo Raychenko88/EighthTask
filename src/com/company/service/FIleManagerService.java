@@ -25,7 +25,7 @@ public class FIleManagerService extends Thread {
         writeToFile(fileName,obj,append);
     }
 
-    public static void writeToFileWithThread(int iteration,String fileName, ConnectionToServer obj){
+    public static synchronized void writeToFileWithThread(int iteration,String fileName, ConnectionToServer obj){
         ArrayList<ConnectionToServer> arr = new ArrayList<>();
         for (int i = 0; i < iteration; i++){
             arr.add(new ConnectionToServer());
@@ -33,12 +33,11 @@ public class FIleManagerService extends Thread {
         for (int i = 0; i < iteration; i++){
             FIleManagerService fIleManagerService = new FIleManagerService(fileName, obj, true);
             fIleManagerService.run();
-            try {
-                fIleManagerService.join();
-            }catch (InterruptedException a){
-
-            }
-
+//            try {
+//                fIleManagerService.join();
+//            }catch (InterruptedException a){
+//
+//            }
         }
 
     }
