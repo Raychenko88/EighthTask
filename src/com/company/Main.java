@@ -4,8 +4,6 @@ package com.company;
 import com.company.model.ConnectionToServer;
 import com.company.service.FIleManagerService;
 import com.company.util.RandomNumbers;
-
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Main {
@@ -28,18 +26,19 @@ public class Main {
                     connectionToServer.setTimestamp(new Date().getTime());
                 }
 //            FIleManagerService.writeToFile(fileName, connectionToServer, true);
-                FIleManagerService fIleManagerService1 = new FIleManagerService(fileName, connectionToServer, true);
-                FIleManagerService fIleManagerService2 = new FIleManagerService(fileName, connectionToServer, true);
-                FIleManagerService fIleManagerService3 = new FIleManagerService(fileName, connectionToServer, true);
-                fIleManagerService1.run();
-                fIleManagerService2.run();
-                fIleManagerService3.run();
-                fIleManagerService1.join();
-                fIleManagerService2.join();
-                fIleManagerService3.join();
+//                FIleManagerService fIleManagerService1 = new FIleManagerService(fileName, connectionToServer, true);
+//                FIleManagerService fIleManagerService2 = new FIleManagerService(fileName, connectionToServer, true);
+//                FIleManagerService fIleManagerService3 = new FIleManagerService(fileName, connectionToServer, true);
+//                fIleManagerService1.run();
+//                fIleManagerService2.run();
+//                fIleManagerService3.run();
+//                fIleManagerService1.join();
+//                fIleManagerService2.join();
+//                fIleManagerService3.join();
+                FIleManagerService.writeToFileWithThread(3, fileName, connectionToServer);
             }
             try {
-                Thread.sleep(1000*60);
+                Thread.sleep(1000*10);
             }catch (Exception a){
                 System.out.println("что то пошло не так");
             }

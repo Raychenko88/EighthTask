@@ -25,6 +25,24 @@ public class FIleManagerService extends Thread {
         writeToFile(fileName,obj,append);
     }
 
+    public static void writeToFileWithThread(int iteration,String fileName, ConnectionToServer obj){
+        ArrayList<ConnectionToServer> arr = new ArrayList<>();
+        for (int i = 0; i < iteration; i++){
+            arr.add(new ConnectionToServer());
+        }
+        for (int i = 0; i < iteration; i++){
+            FIleManagerService fIleManagerService = new FIleManagerService(fileName, obj, true);
+            fIleManagerService.run();
+            try {
+                fIleManagerService.join();
+            }catch (InterruptedException a){
+
+            }
+
+        }
+
+    }
+
     public static void createFolderAndFile(String path,String fileName) {
         pathFile = path;
         File filePath = new File(path);                          // указываем путь где должна быть папка
